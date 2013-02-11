@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
 
 platform = node['platform']
 
@@ -24,18 +25,22 @@ platform = node['platform']
 Chef::Log.fatal!("Only works on Ubuntu. Instance is: #{platform}") unless platform?("ubuntu")
 
 ncare_agent = node['ncare_agent']
+pkg_name = "ncare_agent"
 pkg_name_base = ncare_agent['pkg_name_base']
+pkg_filename = "#{pkg_name_base}_all.deb"
 pkg_url = ncare_agent[platform]['url']
 pkg_checksum = ncare_agent[platform]['checksum']
-pkg_destination = "#{Chef::Config['file_cache_path']}/#{ncare_agent['pkg_name_base']}"
+pkg_destination = "#{Chef::Config['file_cache_path']}/#{pkg_filename}"
 
 ncare_agent[platform]['packages'].each do |pkg|
   package pkg
 end
 
-pakcage pkg_name_base do
+package pkg_name  do
   action :nothing
   source pkg_destination
+#  version ncare_agent['version']
+  provider Chef::Provider::Package::Dpkg
 end
 
 remote_file pkg_destination do
@@ -44,11 +49,11 @@ remote_file pkg_destination do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :install, "package[#{pkg_name_base}]"
+  notifies :install, "package[#{pkg_name}]", :immediately
 end
 
-service "ncare-agent" do
-  supports :status => true, :restart => true
-  action[ :enable, :start ]
-end
+# services "ncare-agent" do
+#   supports :status => true, :restart => true
+#   action[ :enable, :start ]
+# end
 
