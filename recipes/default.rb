@@ -52,7 +52,7 @@ remote_file pkg_destination do
   notifies :install, "package[#{pkg_name}]", :immediately
 end
 
-services "ncare-agent" do
+service "ncare-agent" do
   supports :status => true, :restart => true
   action[ :enable, :start ]
 end
