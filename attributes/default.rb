@@ -18,7 +18,7 @@
 #
 default['ncare_agent']['version'] = '1.1.0-6'
 default['ncare_agent']['auth_token'] = 'wtmWWcbnac9jnNXQ2mXbuZFgZbV5Napr'
-default['ncare_agent']['server'] = 'ncare.netenrick.net'
+default['ncare_agent']['server'] = 'ncare.netenrich.net'
 default['ncare_agent']['pkg_name_base'] = "ncare-agent_#{default['ncare_agent']['version']}"
 default['ncare_agent']['ubuntu']['url'] = "http://dl.dropbox.com/u/8561338/#{default['ncare_agent']['pkg_name_base']}_all.deb"
 default['ncare_agent']['ubuntu']['checksum'] = ''
