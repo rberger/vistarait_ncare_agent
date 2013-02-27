@@ -40,7 +40,7 @@ end
 
 execute "first_ncare_start" do
   action :nothing
-  command "/etc/init.d/ncare-agent start #{ncare_agent['auth_token']} #{ncare_agent['server']"
+  command "/etc/init.d/ncare-agent start #{ncare_agent['auth_token']} #{ncare_agent['server']}"
 end
 
 package pkg_name  do
