@@ -27,3 +27,6 @@ default['ncare_agent']['centos5']['checksum'] = ''
 default['ncare_agent']['centos6']['url'] = "http://dl.dropbox.com/u/8561338/#{default['ncare_agent']['pkg_name_base']}.el6.noarch.rpm"
 default['ncare_agent']['centos6']['checksum'] = ''
 default['ncare_agent']['ubuntu']['packages'] = %w(python-twisted-web python-apt libsnmp15)
+default['ncare_agent']['conf_dir'] = '/opt/ncare/conf'
+default['ncare_agent']['conf_filename'] = 'config.properties'
+

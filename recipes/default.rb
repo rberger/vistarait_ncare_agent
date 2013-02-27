@@ -31,9 +31,18 @@ pkg_filename = "#{pkg_name_base}_all.deb"
 pkg_url = ncare_agent[platform]['url']
 pkg_checksum = ncare_agent[platform]['checksum']
 pkg_destination = "#{Chef::Config['file_cache_path']}/#{pkg_filename}"
+conf_file_name = ncare_agent['conf_filename']
+conf_file_path = "#{ncare_agent['conf_dir']}/#{conf_file_name}"
 
 ncare_agent[platform]['packages'].each do |pkg|
   package pkg
+end
+
+template conf_file_path do
+  source "#{conf_file_name}.erb"
+  variables(
+            :auth_token = ncare_agent['auth_token']
+           )
 end
 
 package pkg_name  do
@@ -52,7 +61,8 @@ remote_file pkg_destination do
   notifies :install, "package[#{pkg_name}]", :immediately
 end
 
+
 service "ncare-agent" do
   supports :status => true, :restart => true
-  action[ :enable, :start ]
+  action [ :enable, :start ]
 end
