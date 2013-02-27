@@ -38,13 +38,6 @@ ncare_agent[platform]['packages'].each do |pkg|
   package pkg
 end
 
-template conf_file_path do
-  source "#{conf_file_name}.erb"
-  variables(
-            :auth_token = ncare_agent['auth_token']
-           )
-end
-
 package pkg_name  do
   action :nothing
   source pkg_destination
@@ -61,6 +54,13 @@ remote_file pkg_destination do
   notifies :install, "package[#{pkg_name}]", :immediately
 end
 
+
+template conf_file_path do
+  source "#{conf_file_name}.erb"
+  variables(
+            :auth_token = ncare_agent['auth_token']
+           )
+end
 
 service "ncare-agent" do
   supports :status => true, :restart => true
