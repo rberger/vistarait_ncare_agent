@@ -38,11 +38,17 @@ ncare_agent[platform]['packages'].each do |pkg|
   package pkg
 end
 
+execute "first_ncare_start" do
+  action :nothing
+  command "/etc/init.d/ncare-agent start #{ncare_agent['auth_token']} #{ncare_agent['server']"
+end
+
 package pkg_name  do
   action :nothing
   source pkg_destination
 #  version ncare_agent['version']
   provider Chef::Provider::Package::Dpkg
+  notifies :execute, "first_ncare_start"
 end
 
 remote_file pkg_destination do
@@ -55,12 +61,15 @@ remote_file pkg_destination do
 end
 
 
-template conf_file_path do
-  source "#{conf_file_name}.erb"
-  variables(
-            :auth_token = ncare_agent['auth_token']
-           )
-end
+# The initial start with the auth_token as an argument sets up the
+# config file
+#
+# template conf_file_path do
+#   source "#{conf_file_name}.erb"
+#   variables(
+#             :auth_token => ncare_agent['auth_token']
+#            )
+# end
 
 service "ncare-agent" do
   supports :status => true, :restart => true
