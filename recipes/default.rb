@@ -48,7 +48,7 @@ package pkg_name  do
   source pkg_destination
 #  version ncare_agent['version']
   provider Chef::Provider::Package::Dpkg
-  notifies :execute, "first_ncare_start"
+  notifies :run, "execute[first_ncare_start]"
 end
 
 remote_file pkg_destination do
